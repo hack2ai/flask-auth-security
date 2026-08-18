@@ -1,0 +1,7 @@
+Flask>=3.1,<4
+Flask-WTF>=1.2,<2
+Flask-Limiter>=3.8,<4
+python-dotenv>=1.0,<2
+Werkzeug>=3.1,<4
+pytest>=8,<9
+bandit>=1.8,<2

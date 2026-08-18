@@ -1,0 +1,153 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+}
+
+.navbar {
+    background: #111827;
+    color: white;
+    padding: 16px 0;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    width: min(92%, 900px);
+    margin: 0 auto;
+}
+
+.brand {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.user-info {
+    font-size: 14px;
+}
+
+.auth-card,
+.dashboard-card {
+    max-width: 500px;
+    margin: 60px auto;
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    margin-top: 0;
+}
+
+.subtitle {
+    color: #6b7280;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+.form-group input:focus {
+    outline: 2px solid #2563eb;
+    outline-offset: 1px;
+}
+
+.button {
+    border: 0;
+    border-radius: 7px;
+    padding: 11px 18px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.button:hover {
+    opacity: 0.9;
+}
+
+.button.danger {
+    background: #dc2626;
+}
+
+.form-footer {
+    margin-top: 20px;
+}
+
+.form-footer a {
+    color: #2563eb;
+}
+
+.field-error {
+    display: block;
+    color: #b91c1c;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.password-rules {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+.password-rules ul {
+    margin-bottom: 0;
+}
+
+.alert {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 7px;
+}
+
+.alert.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.security-status {
+    margin: 25px 0;
+    padding: 20px;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.security-status li {
+    margin-bottom: 8px;
+}
+
+footer {
+    text-align: center;
+    color: #6b7280;
+    padding: 30px 0;
+}

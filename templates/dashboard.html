@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-card">
+
+    <h1>Welcome, {{ user["username"] }}</h1>
+
+    <p>
+        You have successfully authenticated.
+    </p>
+
+    <div class="security-status">
+        <h2>Security Controls</h2>
+
+        <ul>
+            <li>Password stored using a secure password hash</li>
+            <li>Session-based authentication</li>
+            <li>CSRF protection enabled</li>
+            <li>Authentication rate limiting enabled</li>
+            <li>Protected dashboard route</li>
+            <li>Security response headers enabled</li>
+        </ul>
+    </div>
+
+    <form
+        method="POST"
+        action="{{ url_for('logout') }}"
+    >
+        {{ logout_form.hidden_tag() }}
+
+        {{ logout_form.submit(
+            class="button danger",
+            value="Logout"
+        ) }}
+    </form>
+
+</div>
+
+{% endblock %}

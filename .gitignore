@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+.env
+*.db
+database/*.db
+instance/
+.pytest_cache/
+
+app.py.backup
+app.py.security-passed
+app.py.security-final
+test_security_suite.py.passed
+test_security_suite.py.security-final
