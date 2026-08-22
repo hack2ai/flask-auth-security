@@ -1,86 +1,183 @@
 # Secure Flask Authentication System
 
-A security-focused Flask web application demonstrating secure user authentication, session management, CSRF protection, password hashing, rate limiting, protected routes, and HTTP security headers.
+> A defensive Flask application demonstrating secure authentication, session management, CSRF protection, password hashing, rate limiting, protected routes, security headers, and automated security testing.
 
-This project was developed and tested in an isolated Kali Linux environment as a practical secure-coding and web-application-security project.
+[![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-Web%20Framework-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![Security](https://img.shields.io/badge/Security-Secure%20Coding-B91C1C?style=for-the-badge)](https://owasp.org/)
 
----
+## Overview
 
-## 1. Project Overview
+This project implements a small authentication-focused Flask application designed to demonstrate practical secure-coding controls for web applications.
 
-The Secure Flask Authentication System provides a protected authentication workflow consisting of:
+The application covers the core authentication lifecycle—registration, login, session handling, logout, and protected resources—while adding defensive controls against common web-application threats.
 
-- User registration
-- User login
-- User logout
-- Password hashing
+## Security Controls
+
+- Password hashing instead of plaintext password storage
 - Session-based authentication
-- CSRF protection
-- Protected dashboard
-- Authentication rate limiting
-- Security response headers
-- Automated security testing
+- CSRF protection on state-changing forms
+- Login/authentication rate limiting
+- Protected application routes
+- HTTP security response headers
+- Input validation
+- Logout/session invalidation
+- Automated security-focused tests
 
-The primary goal of the project is to demonstrate how common authentication vulnerabilities can be mitigated using Flask security mechanisms and secure coding practices.
-
----
-
-## 2. Project Objectives
-
-The main objectives are:
-
-1. Implement secure user authentication.
-2. Prevent unauthorized access to protected resources.
-3. Protect authentication forms against CSRF attacks.
-4. Store passwords using secure password hashing.
-5. Implement session-based authentication.
-6. Prevent excessive login attempts using rate limiting.
-7. Add HTTP security response headers.
-8. Automatically test important security controls.
-9. Verify that logout invalidates authenticated sessions.
-10. Produce reproducible security-test evidence.
-
----
-
-## 3. Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| Programming Language | Python |
-| Web Framework | Flask |
-| Authentication | Session-based authentication |
-| Password Security | Password hashing |
-| CSRF Protection | Flask-WTF / CSRF protection |
-| Database | SQLite |
-| Frontend | HTML / CSS |
-| Operating System | Kali Linux |
-| Testing | Python security test suite |
-
----
-
-## 4. Security Features
-
-### 4.1 Password Hashing
-
-Passwords are not stored as plaintext.
-
-The application uses password hashing so that the original password is not directly stored in the database.
-
-Benefits:
-
-- Prevents plaintext password storage.
-- Reduces damage from database exposure.
-- Makes password verification safer.
-
----
-
-### 4.2 Session-Based Authentication
-
-After successful authentication, the application creates an authenticated session.
-
-Protected routes verify the authentication state before allowing access.
-
-Example protected endpoint:
+## Architecture
 
 ```text
-/dashboard
+              Browser
+                 │
+                 ▼
+          Flask Application
+                 │
+       ┌─────────┼─────────┐
+       ▼         ▼         ▼
+ Authentication  CSRF    Security
+    Layer       Guard     Headers
+       │
+       ▼
+ Session Management
+       │
+       ▼
+ Password Hashing
+       │
+       ▼
+     SQLite
+```
+
+## Authentication Flow
+
+```text
+Registration
+     ↓
+Validate Input
+     ↓
+Hash Password
+     ↓
+Persist User
+
+Login
+     ↓
+Validate Credentials
+     ↓
+Apply Rate Limit
+     ↓
+Create Session
+     ↓
+Protected Dashboard
+     ↓
+Logout / Invalidate Session
+```
+
+## Technology Stack
+
+| Component | Technology |
+|---|---|
+| Language | Python |
+| Web framework | Flask |
+| Authentication | Session-based authentication |
+| Password security | Werkzeug password hashing |
+| CSRF | Flask-WTF / CSRF protection |
+| Database | SQLite |
+| Frontend | HTML / CSS |
+| Testing | Python test suite |
+| Security reference | OWASP secure-coding principles |
+
+## Project Structure
+
+```text
+flask-auth-security/
+├── app.py
+├── templates/
+├── static/
+├── tests/
+├── requirements.txt
+└── README.md
+```
+
+> The exact module layout may evolve with the implementation; inspect the repository source for the current structure.
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.x
+- pip
+- A local development environment
+
+### Installation
+
+```bash
+git clone https://github.com/hack2ai/flask-auth-security.git
+cd flask-auth-security
+python -m venv venv
+```
+
+Activate the virtual environment and install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Configure application secrets through environment variables rather than committing them to the repository.
+
+### Run
+
+```bash
+python app.py
+```
+
+Open the local Flask development server in your browser and test registration, login, the protected dashboard, and logout.
+
+## Testing
+
+Run the project's test suite according to the test configuration in the repository. A useful security-focused test plan should verify:
+
+- Registration validation
+- Password hashing
+- Successful login
+- Invalid credential handling
+- Protected-route access control
+- CSRF enforcement
+- Rate-limit behavior
+- Logout/session invalidation
+- Security response headers
+
+## Security Engineering Notes
+
+This repository is an educational secure-coding project, **not a security-audited production authentication service**.
+
+A production deployment should additionally consider:
+
+- HTTPS everywhere
+- Secure, HttpOnly, and appropriately scoped cookies
+- Strong session-secret management and rotation
+- Production-grade database configuration
+- Account recovery and email verification controls
+- Multi-factor authentication where appropriate
+- Centralized audit logging
+- Dependency vulnerability scanning
+- Monitoring and alerting
+- Stronger authorization policies for application-specific resources
+- Threat modeling and penetration testing
+
+## Responsible Disclosure
+
+If you discover a security issue in this project, avoid publicly exposing sensitive exploit details before the issue can be reviewed. Use the repository's issue/disclosure process where applicable.
+
+## Project Value
+
+This project demonstrates practical **Flask security engineering, authentication design, secure password handling, CSRF defense, session management, rate limiting, HTTP hardening, and automated security testing**.
+
+## Author
+
+**Pankaj (Tony) Kumar**  
+AI Engineer • Full Stack Developer • Generative AI & RAG Specialist
+
+[GitHub](https://github.com/hack2ai) • [LinkedIn](https://www.linkedin.com/in/pankaj-kumar-ab591a216)
+
+## License
+
+See the repository license file for the applicable project license.
