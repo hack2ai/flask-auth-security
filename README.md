@@ -1,175 +1,231 @@
 # Secure Flask Authentication System
 
-> A defensive Flask application demonstrating secure authentication, session management, CSRF protection, password hashing, rate limiting, protected routes, security headers, and automated security testing.
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-3.x-000000?style=for-the-badge&logo=flask&logoColor=white)
+![Security](https://img.shields.io/badge/Security-Secure%20Coding-B91C1C?style=for-the-badge)
+![Tests](https://img.shields.io/badge/Tests-5%20passed-2EA44F?style=for-the-badge)
+[![Security and Tests](https://github.com/hack2ai/flask-auth-security/actions/workflows/security.yml/badge.svg)](https://github.com/hack2ai/flask-auth-security/actions/workflows/security.yml)
 
-[![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Flask-Web%20Framework-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
-[![Security](https://img.shields.io/badge/Security-Secure%20Coding-B91C1C?style=for-the-badge)](https://owasp.org/)
+> A defensive Flask authentication application demonstrating practical secure-coding controls for registration, login, sessions, CSRF protection, password hashing, rate limiting, protected routes, security headers, and automated testing.
 
-## Overview
+## Project status
 
-This project implements a small authentication-focused Flask application designed to demonstrate practical secure-coding controls for web applications.
+The application and its security-focused test suite are implemented and documented. The observed GitHub Actions test stage completed with **5 passing tests**. The CI pipeline also runs Bandit against application code; security findings are treated as actionable review items rather than being hidden by the workflow. The project is educational and has not been represented as a production security audit.
 
-The application covers the core authentication lifecycle—registration, login, session handling, logout, and protected resources—while adding defensive controls against common web-application threats.
+## Security controls
 
-## Security Controls
+| Control | Implementation |
+|---|---|
+| Password storage | Werkzeug password hashing with `scrypt` |
+| CSRF defense | Flask-WTF / CSRF protection |
+| Authentication throttling | Flask-Limiter |
+| Session protection | `HttpOnly`, `SameSite=Lax`, configurable `Secure`, 30-minute lifetime |
+| Input validation | WTForms validation and password-strength checks |
+| Protected resources | Authentication decorator and session validation |
+| Security headers | CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` |
+| Cache protection | `Cache-Control: no-store` |
+| Error handling | Generic unexpected-error response with server-side logging |
+| Secret management | `SECRET_KEY` supplied through environment configuration |
+| Request-size control | 1 MB maximum request body |
+| Automated verification | Pytest + Bandit |
 
-- Password hashing instead of plaintext password storage
-- Session-based authentication
-- CSRF protection on state-changing forms
-- Login/authentication rate limiting
-- Protected application routes
-- HTTP security response headers
-- Input validation
-- Logout/session invalidation
-- Automated security-focused tests
+The current implementation establishes these controls in `app.py` and `config.py`. fileciteturn98file0 fileciteturn99file0
 
 ## Architecture
 
 ```text
-              Browser
-                 │
-                 ▼
-          Flask Application
-                 │
-       ┌─────────┼─────────┐
-       ▼         ▼         ▼
- Authentication  CSRF    Security
-    Layer       Guard     Headers
-       │
-       ▼
- Session Management
-       │
-       ▼
- Password Hashing
-       │
-       ▼
-     SQLite
+                        Browser
+                           |
+                           v
+                  Flask Web Application
+                           |
+            +--------------+--------------+
+            |              |              |
+            v              v              v
+      Input Validation   CSRF Guard   Rate Limiting
+            |              |              |
+            +--------------+--------------+
+                           |
+                           v
+                 Authentication Logic
+                           |
+                  +--------+--------+
+                  |                 |
+                  v                 v
+            Session Security   Password Hashing
+                  |                 |
+                  +--------+--------+
+                           |
+                           v
+                         SQLite
+
+        CI pipeline: Pytest  →  Bandit  →  GitHub Actions
 ```
 
-## Authentication Flow
+## Authentication flow
 
 ```text
 Registration
-     ↓
-Validate Input
-     ↓
-Hash Password
-     ↓
-Persist User
+    ↓
+Validate username/password
+    ↓
+Hash password
+    ↓
+Create user
 
 Login
-     ↓
-Validate Credentials
-     ↓
-Apply Rate Limit
-     ↓
-Create Session
-     ↓
-Protected Dashboard
-     ↓
-Logout / Invalidate Session
+    ↓
+Validate credentials
+    ↓
+Apply rate limit
+    ↓
+Create authenticated session
+    ↓
+Protected dashboard
+    ↓
+Logout / clear session
 ```
 
-## Technology Stack
+## Technology stack
 
-| Component | Technology |
+| Layer | Technology |
 |---|---|
-| Language | Python |
+| Language | Python 3.x |
 | Web framework | Flask |
-| Authentication | Session-based authentication |
-| Password security | Werkzeug password hashing |
-| CSRF | Flask-WTF / CSRF protection |
+| Forms | Flask-WTF / WTForms |
+| Rate limiting | Flask-Limiter |
+| Password hashing | Werkzeug / scrypt |
 | Database | SQLite |
-| Frontend | HTML / CSS |
-| Testing | Python test suite |
-| Security reference | OWASP secure-coding principles |
+| Configuration | Environment variables + `python-dotenv` |
+| Testing | Pytest |
+| SAST | Bandit |
+| CI | GitHub Actions |
+| Frontend | HTML / CSS / Jinja templates |
 
-## Project Structure
+The repository's dependency file pins compatible major/minor version ranges for Flask, Flask-WTF, Flask-Limiter, Werkzeug, Pytest, Bandit, and python-dotenv. fileciteturn100file0
+
+## Repository structure
 
 ```text
 flask-auth-security/
-├── app.py
-├── templates/
+├── .github/
+│   └── workflows/
+│       └── security.yml
+├── database/
 ├── static/
+├── templates/
 ├── tests/
+├── evidence/
+│   ├── README.md
+│   └── verified-results.md
+├── .env.example
+├── .gitignore
+├── app.py
+├── config.py
 ├── requirements.txt
+├── test_register.py
+├── test_security_suite.py
+├── bandit-report.txt
+├── SECURITY.md
+├── CONTRIBUTING.md
+├── LICENSE
 └── README.md
 ```
 
-> The exact module layout may evolve with the implementation; inspect the repository source for the current structure.
+The repository currently contains both the main `tests/` suite and dedicated security-oriented test scripts. fileciteturn96file0
 
-## Getting Started
+## Getting started
 
-### Prerequisites
-
-- Python 3.x
-- pip
-- A local development environment
-
-### Installation
+### 1. Clone
 
 ```bash
 git clone https://github.com/hack2ai/flask-auth-security.git
 cd flask-auth-security
+```
+
+### 2. Create a virtual environment
+
+```bash
 python -m venv venv
 ```
 
-Activate the virtual environment and install dependencies:
+Activate the environment using the command appropriate for your shell.
+
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Configure application secrets through environment variables rather than committing them to the repository.
+### 4. Configure the application
 
-### Run
+Create a local `.env` file from `.env.example` and set a strong development secret. Never commit the real `.env` file.
+
+```text
+SECRET_KEY=replace-with-a-local-secret
+```
+
+The application intentionally raises an error when `SECRET_KEY` is missing. fileciteturn99file0
+
+### 5. Run
 
 ```bash
 python app.py
 ```
 
-Open the local Flask development server in your browser and test registration, login, the protected dashboard, and logout.
+The application starts the Flask development server on `127.0.0.1:5000` with debug mode disabled. fileciteturn98file0
 
 ## Testing
 
-Run the project's test suite according to the test configuration in the repository. A useful security-focused test plan should verify:
+Run the automated suite with a test-only secret:
 
-- Registration validation
-- Password hashing
-- Successful login
-- Invalid credential handling
-- Protected-route access control
-- CSRF enforcement
-- Rate-limit behavior
-- Logout/session invalidation
-- Security response headers
+```bash
+SECRET_KEY=test-secret-key pytest -q
+```
 
-## Security Engineering Notes
+The observed CI run reached the test stage successfully with:
 
-This repository is an educational secure-coding project, **not a security-audited production authentication service**.
+```text
+5 passed
+```
 
-A production deployment should additionally consider:
+Run the security scanner against application code:
 
-- HTTPS everywhere
-- Secure, HttpOnly, and appropriately scoped cookies
-- Strong session-secret management and rotation
-- Production-grade database configuration
-- Account recovery and email verification controls
-- Multi-factor authentication where appropriate
-- Centralized audit logging
-- Dependency vulnerability scanning
-- Monitoring and alerting
-- Stronger authorization policies for application-specific resources
-- Threat modeling and penetration testing
+```bash
+bandit -r app.py config.py database
+```
 
-## Responsible Disclosure
+The repository also includes a previously recorded Bandit report showing no issues in that historical scan; the current CI workflow performs a fresh scan and should be treated as the authoritative current result. fileciteturn103file0
 
-If you discover a security issue in this project, avoid publicly exposing sensitive exploit details before the issue can be reviewed. Use the repository's issue/disclosure process where applicable.
+## CI
 
-## Project Value
+GitHub Actions runs the following pipeline for relevant changes:
 
-This project demonstrates practical **Flask security engineering, authentication design, secure password handling, CSRF defense, session management, rate limiting, HTTP hardening, and automated security testing**.
+```text
+Install dependencies
+        ↓
+   Pytest suite
+        ↓
+ Bandit application scan
+```
+
+The workflow uses a CI-only secret and CI database path so tests do not depend on production configuration. The workflow file is `.github/workflows/security.yml`.
+
+## Evidence
+
+See [`evidence/README.md`](evidence/README.md) and [`evidence/verified-results.md`](evidence/verified-results.md) for the verification baseline and evidence policy.
+
+Screenshots should only be added after sanitizing credentials, cookies, personal data, and sensitive environment details.
+
+## Security engineering notes
+
+This project demonstrates defensive application-security patterns, but it is **not a production-ready authentication service and has not undergone a formal security audit**.
+
+A real deployment should additionally consider HTTPS enforcement, production secret management and rotation, a production-grade database, MFA where appropriate, account recovery controls, centralized audit logging, dependency and container scanning, monitoring/alerting, authorization design, threat modeling, and penetration testing.
+
+## Responsible testing
+
+Run security testing only against systems and accounts you own or are explicitly authorized to assess. Never place real credentials or production session data into test fixtures.
 
 ## Author
 
@@ -180,4 +236,4 @@ AI Engineer • Full Stack Developer • Generative AI & RAG Specialist
 
 ## License
 
-See the repository license file for the applicable project license.
+See [`LICENSE`](LICENSE) for the repository license.
