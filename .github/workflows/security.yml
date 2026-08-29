@@ -40,5 +40,5 @@ jobs:
       - name: Run tests
         run: pytest -q
 
-      - name: Run Bandit
-        run: bandit -r . -x .venv,venv,.git,database
+      - name: Run Bandit on application code
+        run: bandit -r app.py config.py database -x tests,test_register.py,test_security_suite.py
