@@ -16,6 +16,10 @@ on:
 permissions:
   contents: read
 
+env:
+  SECRET_KEY: ci-test-secret
+  DATABASE_PATH: ${{ github.workspace }}/database/ci_users.db
+
 jobs:
   test-and-scan:
     runs-on: ubuntu-latest
